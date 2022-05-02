@@ -1,0 +1,32 @@
+- Instalar Ansible
+
+    $ sudo apt update
+    $ sudo apt install software-properties-common
+    $ sudo add-apt-repository --yes --update ppa:ansible/ansible
+    $ sudo apt install ansible
+    $ sudo apt install python3-pip
+    $ sudo apt-get update
+    $ sudo apt-get -y install python3-boto3
+
+
+
+- Colocar las credenciales AWS en un archivo .yml
+
+    aws_key_id y aws_key_secret con la idea de encriptarla.
+    ansible-vault encrypt creds.yml y setear un password
+
+
+
+- Instalar la coleccion de AWS
+
+    Go to ansible documentation
+
+    ansible-galaxy collection install amazon.aws -p .
+
+    Instala la coleccion en el directorio local
+
+- Correr el playbook de ansible
+
+ansible-playbook mule_installation.yml
+
+los ultimos pasos se corrieron manual ya que no encontre la manera de realizar la conexion del runtime con el anyplatform

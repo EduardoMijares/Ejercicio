@@ -1,0 +1,6 @@
+mysql:
+  host: "endpointMYSQL"
+  port: "3306"
+  user: "admin"
+  password: "Abril@2022"
+  database: "demodb"

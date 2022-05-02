@@ -1,0 +1,56 @@
+---
+- name: create a mule runtime
+  hosts: localhost
+  connection: local
+  vars_files:
+   - creds.yml
+
+  tasks:
+
+  - name: get the mule binary
+    amazon.aws.aws_s3:
+     mode: get
+     bucket: mule-bucket-test-ed
+     dest: /home/ubuntu/mule-ee-distribution-standalone-4.4.0.zip
+     object: mule-ee-distribution-standalone-4.4.0.zip
+     aws_access_key: "{{ aws_access_key }}"
+     aws_secret_key: "{{ aws_secret_key }}"
+
+  - name: add openjdk ppa
+    apt_repository:
+     repo: 'ppa:openjdk-r/ppa'
+     update_cache: yes
+
+  - name: ensure java installed
+    package:
+     name: openjdk-8-jdk
+     state: present
+
+  - name: make sure unzip package installed
+    package:
+     name: unzip
+     state: latest
+
+  - name: create 'mule' user
+    user:
+     name: mule
+     comment: "Mule Server Standalone"
+
+  - name: copy runtime from controller machine
+    unarchive:
+     copy: yes
+     src: /home/ubuntu/mule-ee-distribution-standalone-4.4.0.zip
+     dest: /home/ubuntu/mule
+     owner: mule
+     group: mule
+     creates: /home/ubuntu/mule/ansible.done
+
+  - name: creates ansible.done file for mule runtime
+    copy:
+     content: ""
+     dest: /home/ubuntu/mule/ansible.done
+     force: no
+     group: root
+     owner: root
+     mode: 0644
+
